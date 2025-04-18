@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoMath</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            },
+            secondary: {
+              50: '#fdf4ff',
+              100: '#fae8ff',
+              200: '#f5d0fe',
+              300: '#f0abfc',
+              400: '#e879f9',
+              500: '#d946ef',
+              600: '#c026d3',
+              700: '#a21caf',
+              800: '#86198f',
+              900: '#701a75',
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    .calculator-btn {
+      @apply flex items-center justify-center rounded-lg text-white font-medium text-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95;
+    }
+    .number-btn {
+      @apply bg-gray-700 hover:bg-gray-600;
+    }
+    .operation-btn {
+      @apply bg-gray-600 hover:bg-gray-500;
+    }
+    .function-btn {
+      @apply bg-primary-600 hover:bg-primary-500;
+    }
+    .equals-btn {
+      @apply bg-secondary-600 hover:bg-secondary-500;
+    }
+    .clear-btn {
+      @apply bg-red-600 hover:bg-red-500;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 text-white">
+  <!-- Navbar -->
+  <nav class="bg-black/30 backdrop-blur-md p-4 sticky top-0 z-50">
+    <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+      <div class="flex items-center mb-4 sm:mb-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2 text-secondary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        <h1 class="text-2xl font-bold">EcoMath</h1>
+      </div>
+      <div class="flex space-x-4">
+        <a href="#calculator" class="hover  hover:text-secondary-300 transition-colors">Calculator</a>
+        <a href="#features" class="hover:text-secondary-300 transition-colors">Features</a>
+        <a href="#team" class="hover:text-secondary-300 transition-colors">Team</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Hero Section -->
+    <div class="text-center py-12">
+      <h1 class="text-4xl font-bold mb-4">Advanced Scientific Calculator</h1>
+      <p class="text-gray-300 max-w-xl mx-auto">Perform complex mathematical calculations with ease using our powerful EcoMath.</p>
+    </div>
+
+    <!-- Calculator Type Selector -->
+    <!-- <div class="flex justify-center mb-6 overflow-x-auto py-2 no-scrollbar">
+      <div class="inline-flex bg-black/20 backdrop-blur-sm p-1 rounded-lg">
+        <button class="calculator-type-btn px-4 py-2 rounded-md bg-secondary-600 text-white font-medium">Scientific</button>
+        <button class="calculator-type-btn px-4 py-2 rounded-md text-white font-medium hover:bg-black/20">Standard</button>
+        <button class="calculator-type-btn px-4 py-2 rounded-md text-white font-medium hover:bg-black/20">Programmer</button>
+        <button class="calculator-type-btn px-4 py-2 rounded-md text-white font-medium hover:bg-black/20">Date</button>
+        <button class="calculator-type-btn px-4 py-2 rounded-md text-white font-medium hover:bg-black/20">Converter</button>
+      </div>
+    </div> -->
+
+    <!-- Calculator Section -->
+    <section id="calculator" class="max-w-md mx-auto bg-black/30 backdrop-blur-md rounded-2xl overflow-hidden shadow-2xl mb-12">
+      <div class="p-4 bg-black/50">
+        <input type="text" id="display" disabled class="w-full bg-transparent text-right text-3xl font-light tracking-wider text-white" />
+      </div>
+      <div class="grid grid-cols-4 gap-1 p-2">
+        <button onclick="clearDisplay()" class="calculator-btn clear-btn h-12">C</button>
+        <button onclick="append('(')" class="calculator-btn function-btn h-12">(</button>
+        <button onclick="append(')')" class="calculator-btn function-btn h-12">)</button>
+        <button onclick="append('/')" class="calculator-btn operation-btn h-12">÷</button>
+
+        <button onclick="append('7')" class="calculator-btn number-btn h-12">7</button>
+        <button onclick="append('8')" class="calculator-btn number-btn h-12">8</button>
+        <button onclick="append('9')" class="calculator-btn number-btn h-12">9</button>
+        <button onclick="append('*')" class="calculator-btn operation-btn h-12">×</button>
+
+        <button onclick="append('4')" class="calculator-btn number-btn h-12">4</button>
+        <button onclick="append('5')" class="calculator-btn number-btn h-12">5</button>
+        <button onclick="append('6')" class="calculator-btn number-btn h-12">6</button>
+        <button onclick="append('-')" class="calculator-btn operation-btn h-12">−</button>
+
+        <button onclick="append('1')" class="calculator-btn number-btn h-12">1</button>
+        <button onclick="append('2')" class="calculator-btn number-btn h-12">2</button>
+        <button onclick="append('3')" class="calculator-btn number-btn h-12">3</button>
+        <button onclick="append('+')" class="calculator-btn operation-btn h-12">+</button>
+
+        <button onclick="append('0')" class="calculator-btn number-btn h-12">0</button>
+        <button onclick="append('.')" class="calculator-btn number-btn h-12">.</button>
+        <button onclick="calculate()" class="calculator-btn equals-btn h-12">=</button>
+        <button onclick="append('**')" class="calculator-btn function-btn h-12">xʸ</button>
+
+        <button onclick="append('Math.sqrt(')" class="calculator-btn function-btn h-12">√</button>
+        <button onclick="append('Math.sin(')" class="calculator-btn function-btn h-12">sin</button>
+        <button onclick="append('Math.cos(')" class="calculator-btn function-btn h-12">cos</button>
+        <button onclick="append('Math.tan(')" class="calculator-btn function-btn h-12">tan</button>
+
+        <button onclick="append('Math.log10(')" class="calculator-btn function-btn h-12">log</button>
+        <button onclick="append('Math.PI')" class="calculator-btn function-btn h-12">π</button>
+        <button onclick="append('Math.E')" class="calculator-btn function-btn h-12">e</button>
+        <button onclick="backspace()" class="calculator-btn function-btn h-12">←</button>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-12">
+      <h2 class="text-3xl font-bold text-center mb-12">Calculator Features</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-black/20 backdrop-blur-sm rounded-xl p-6 hover:bg-black/30 transition-all duration-300 hover:shadow-lg">
+          <div class="bg-gradient-to-br from-primary-500 to-secondary-500 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Basic Operations</h3>
+          <p class="text-gray-300">Perform addition, subtraction, multiplication, and division with ease. Use parentheses to group expressions and control the order of operations.</p>
+        </div>
+        <div class="bg-black/20 backdrop-blur-sm rounded-xl p-6 hover:bg-black/30 transition-all duration-300 hover:shadow-lg">
+          <div class="bg-gradient-to-br from-primary-500 to-secondary-500 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Scientific Functions</h3>
+          <p class="text-gray-300">Calculate trigonometric functions like sine, cosine, and tangent. Use logarithmic functions, square roots, and exponents for advanced calculations.</p>
+        </div>
+        <div class="bg-black/20 backdrop-blur-sm rounded-xl p-6 hover:bg-black/30 transition-all duration-300 hover:shadow-lg">
+          <div class="bg-gradient-to-br from-primary-500 to-secondary-500 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Constants</h3>
+          <p class="text-gray-300">Access mathematical constants like π (Pi) and e (Euler's number). Use these constants in your calculations for precise results.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-12">
+      <h2 class="text-3xl font-bold text-center mb-12">Development Team</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-black/20 backdrop-blur-sm rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+          <div class="h-48 bg-gradient-to-br from-primary-800 to-secondary-800 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-1">Paras</h3>
+            <p class="text-secondary-400 mb-3">Lead Developer</p>
+            <div class="flex justify-center space-x-4">
+              <a href="#" class="text-gray-400 hover:text-secondary-300"><i class="fab fa-github"></i></a>
+              <a href="#" class="text-gray-400 hover:text-secondary-300"><i class="fab fa-linkedin"></i></a>
+              <a href="#" class="text-gray-400 hover:text-secondary-300"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="bg-black/20 backdrop-blur-sm rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+          <div class="h-48 bg-gradient-to-br from-primary-800 to-secondary-800 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-1">Nitish</h3>
+            <p class="text-secondary-400 mb-3">UI/UX Designer</p>
+            <div class="flex justify-center space-x-4">
+              <a href="#" class="text-gray-400 hover:text-secondary-300"><i class="fab fa-github"></i></a>
+              <a href="#" class="text-gray-400 hover:text-secondary-300"><i class="fab fa-linkedin"></i></a>
+              <a href="#" class="text-gray-400 hover:text-secondary-300"><i class="fab fa-dribbble"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="bg-black/20 backdrop-blur-sm rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+          <div class="h-48 bg-gradient-to-br from-primary-800 to-secondary-800 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-1">Mohit</h3>
+            <p class="text-secondary-400 mb-3">QA Engineer</p>
+            <div class="flex justify-center space-x-4">
+              <a href="#" class="text-gray-400 hover:text-secondary-300"><i class="fab fa-github"></i></a>
+              <a href="#" class="text-gray-400 hover:text-secondary-300"><i class="fab fa-linkedin"></i></a>
+              <a href="#" class="text-gray-400 hover:text-secondary-300"><i class="fab fa-stack-overflow"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-black/40 backdrop-blur-md py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center mb-4 md:mb-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2 text-secondary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+          <h2 class="text-xl font-bold">EcoMath</h2>
+        </div>
+        <div class="flex space-x-4">
+          <a href="https://facebook.com" class="text-gray-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+            </svg>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M7 11v2.4h3.97c-.16 1.029-1.2 3.02-3.97 3.02-2.39 0-4.34-1.979-4.34-4.42 0-2.44 1.95-4.42 4.34-4.42 1.36 0 2.27.58 2.79 1.08l1.9-1.83c-1.22-1.14-2.8-1.83-4.69-1.83-3.87 0-7 3.13-7 7s3.13 7 7 7c4.04 0 6.721-2.84 6.721-6.84 0-.46-.051-.81-.111-1.16h-6.61zm0 0 17 2h-3v3h-2v-3h-3v-2h3v-3h2v3h3v2z" fill-rule="evenodd" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="mt-8 text-center text-sm text-gray-400">
+        <p>© 2025 EcoMath. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function append(value) {
+      display.value += value;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function calculate() {
+      try {
+        display.value = eval(display.value);
+      } catch {
+        display.value = 'Error';
+      }
+    }
+
+    function backspace() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    // Add UI interactions for calculator type buttons
+    document.addEventListener('DOMContentLoaded', function() {
+      const calculatorTypeBtns = document.querySelectorAll('.calculator-type-btn');
+      
+      calculatorTypeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          calculatorTypeBtns.forEach(b => {
+            b.classList.remove('bg-secondary-600');
+            b.classList.add('hover:bg-black/20');
+          });
+          this.classList.add('bg-secondary-600');
+          this.classList.remove('hover:bg-black/20');
+        });
+      });
+
+      // Add click effect for calculator buttons
+      const calculatorBtns = document.querySelectorAll('.calculator-btn');
+      calculatorBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          this.classList.add('opacity-70');
+          setTimeout(() => {
+            this.classList.remove('opacity-70');
+          }, 100);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
